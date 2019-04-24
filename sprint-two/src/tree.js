@@ -3,17 +3,36 @@ var Tree = function(value) {
   newTree.value = value;
 
   // your code here
-  newTree.children = null;  // fix me
+  newTree.children = [];
 
+  extend(newTree, treeMethods);
   return newTree;
+};
+
+var extend = function(to, from) {
+  for (var key in from) {
+    to[key] = from[key];
+  }
 };
 
 var treeMethods = {};
 
 treeMethods.addChild = function(value) {
+  var newTree = new Tree(value);
+  this.children.push(newTree);
 };
 
 treeMethods.contains = function(target) {
+  if (this.value === target) {
+    return true;
+  } else {
+    for (var i = 0; i < this.children.length; i++) {
+      if (this.children[i].contains(target)) {
+        return true;
+      }
+    }
+    return false;
+  }
 };
 
 
@@ -21,3 +40,6 @@ treeMethods.contains = function(target) {
 /*
  * Complexity: What is the time complexity of the above functions?
  */
+
+//add child = constant O(1)
+//contain = log n O(log n)  0(n^2) = quadratic *** what time complexity is this?
