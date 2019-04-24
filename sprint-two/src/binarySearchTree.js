@@ -1,4 +1,5 @@
 var BinarySearchTree = function(value) {
+  console.log('hello');
 };
 
 
