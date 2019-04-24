@@ -14,8 +14,8 @@ stackMethods.push = function(val) {
 };
 
 stackMethods.pop = function() {
-  var temp = (this[Object.keys(this).length -1]);
-  delete this[Object.keys(this).length -1];
+  var temp = (this[Object.keys(this).length - 1]);
+  delete this[Object.keys(this).length - 1];
   return temp;
 };
 
