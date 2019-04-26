@@ -27,7 +27,7 @@ Graph.prototype.contains = function(node) {
 Graph.prototype.removeNode = function(node) {
   var target = this[node];
 
-  if (target.edges.length > 0){
+  if (target.edges.length > 0) {
     for (let i = 0; i < target.edges.length; i++) {
       this.removeEdge(target.value, target.edges[i]);
     }
@@ -44,7 +44,7 @@ Graph.prototype.hasEdge = function(fromNode, toNode) {
     return false;
   }
 
-  if (to.edges.length > 0){
+  if (to.edges.length > 0) {
     for (var i = 0; i < to.edges.length; i++) {
       if (fromNode === Number(to.edges[i])) {
         return true;
