@@ -68,4 +68,33 @@ describe('graph', function() {
     expect(graph.hasEdge(3, 5)).to.equal(true);
     expect(graph.hasEdge(5, 5)).to.equal(true);
   });
+
+  it('should only have numeric edges', function() {
+    graph.addNode(5);
+    graph.addNode(2);
+    graph.addNode(1);
+    graph.addNode(3);
+    graph.addNode(6);
+    graph.addEdge(5, 2);
+    graph.addEdge(5, '3');
+    graph.addEdge(5, 1);
+    graph.addEdge(5, '6');
+    expect(graph[5].edges).to.eql([2, 3, 1, 6]);
+  });
+
+  it('should not run callback on methods', function() {
+    var arr = [];
+    var collectKeys = function(item) {
+      arr.push(item);
+    };
+    graph.addNode(5);
+    graph.addNode(2);
+    graph.addNode(1);
+    graph.addNode(3);
+    graph.forEachNode(collectKeys);
+    expect(arr.length).to.equal(4);
+    expect(arr).to.eql(['1', '2', '3', '5']);
+  });
+
+  //tried to callback on own method -> 'this' was being bound to the Window
 });
