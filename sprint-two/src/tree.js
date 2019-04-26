@@ -39,7 +39,6 @@ treeMethods.contains = function(target) {
 
 /*
  * Complexity: What is the time complexity of the above functions?
+  addChild = constant, O(1)
+  contains = logarithmic, O(log n)
  */
-
-//add child = constant O(1)
-//contain = log n O(log n)  0(n^2) = quadratic *** what time complexity is this?
