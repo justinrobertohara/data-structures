@@ -25,11 +25,14 @@ Graph.prototype.contains = function(node) {
 
 // Removes a node from the graph.
 Graph.prototype.removeNode = function(node) {
-  for (var i = 0; i < Object.keys(this).length; i++) {
-    if (this[Object.keys(this)[i]].value === node) {
-      delete this[Object.keys(this)[i]];
+  var target = this[node];
+
+  if (target.edges.length > 0){
+    for (let i = 0; i < target.edges.length; i++) {
+      this.removeEdge(target.value, target.edges[i]);
     }
   }
+  delete this[node];
 };
 
 // Returns a boolean indicating whether two specified nodes are connected.  Pass in the values contained in each of the two nodes.
@@ -37,9 +40,15 @@ Graph.prototype.hasEdge = function(fromNode, toNode) {
   var to = this[toNode];
   var from = this[fromNode];
 
-  for (var i = 0; i < to.edges.length; i++) {
-    if (fromNode === to.edges[i]) {
-      return true;
+  if (from === undefined || to === undefined) {
+    return false;
+  }
+
+  if (to.edges.length > 0){
+    for (var i = 0; i < to.edges.length; i++) {
+      if (fromNode === Number(to.edges[i])) {
+        return true;
+      }
     }
   }
   return false;
@@ -65,10 +74,22 @@ Graph.prototype.removeEdge = function(fromNode, toNode) {
 
 // Pass in a callback which will be executed on each node of the graph.
 Graph.prototype.forEachNode = function(cb) {
+  for (var key in this) {
+    if (typeof this[key] !== 'function') {
+      cb(key);
+    }
+  }
 };
 
 /*
  * Complexity: What is the time complexity of the above functions?
+  addNode: constant, O(1)
+  contains: linear, O(n)
+  removeNode: linear, O(n)
+  hasEdge: linear, O(n)
+  addEdge: constant, O(1)
+  removeEdge: linear, O(n)
+  forEachNode: linear, O(n)
  */
 
 
