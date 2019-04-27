@@ -73,4 +73,18 @@ describe('hashTable', function() {
     hashTable.remove('Mr.');
     expect(hashTable._limit).to.equal(8);
   });
+
+  it('should return the value when retrieve is called', function() {
+    hashTable.insert('Steven', 'Seagal');
+    expect(hashTable.retrieve('Steven')).to.equal('Seagal');
+  });
+
+  it('should be able to handle removing values that are not present', function() {
+    hashTable.remove('Steven');
+    expect(hashTable.retrieve('Steven')).to.equal(undefined);
+  });
+
+  it('should retrieve undefined if the value is not present', function() {
+    expect(hashTable.retrieve('Susan')).to.equal(undefined);
+  });
 });

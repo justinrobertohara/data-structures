@@ -24,4 +24,20 @@ describe('set', function() {
     expect(set.contains('Mel Gibson')).to.equal(false);
   });
 
+  it('should not have duplicate values', function() {
+    set.add('Justin Ohara');
+    set.add('Therese Brown');
+    set.add('Justin Ohara');
+    expect(set._storage.length).to.equal(2);
+    expect(set._storage).to.eql(['Justin Ohara', 'Therese Brown']);
+  });
+
+  it('should not affect the set if a value that is not present is removed', function() {
+    set.add('Justin Ohara');
+    set.add('Therese Brown');
+    set.remove('Mel Gibson');
+    expect(set._storage.length).to.equal(2);
+    expect(set._storage).to.eql(['Justin Ohara', 'Therese Brown']);
+  });
+
 });
