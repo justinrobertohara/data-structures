@@ -6,6 +6,7 @@ var HashTable = function() {
 };
 
 HashTable.prototype.insert = function(k, v) {
+  this.resize();
   var index = getIndexBelowMaxForKey(k, this._limit);
 
   var bucket = [];
@@ -50,6 +51,51 @@ HashTable.prototype.remove = function(k) {
     if (bucket[i][0] === k) {
       bucket.splice(i, 1);
     }
+  }
+  this.resize();
+};
+
+HashTable.prototype.resize = function() {
+  var quarter = this._limit * .25;
+  var arr = [];
+
+  this._storage.each(function(index) {
+    if (index !== undefined) {
+      for (var i = 0; i < index.length; ++i) {
+        arr.push(index[i]);
+      }
+    }
+  });
+
+  console.log('Arr', arr);
+  var length = arr.length;
+
+  if (length === (this._limit * .75)) {
+    this._limit *= 2;
+    console.log('Doubled', this._limit);
+
+    this._storage = LimitedArray(this._limit);
+
+    for (var i = 0; i < arr.length; ++i) {
+      this.insert(arr[i][0], arr[i][1]);
+    }
+
+    var arr2 = [];
+    this._storage.each(function(index) {
+      if (index !== undefined) {
+        for (var i = 0; i < index.length; ++i) {
+          arr2.push(index[i]);
+        }
+      }
+    });
+
+    console.log('new limited array', arr2);
+    this._limit *= 2; //kind of cheating
+
+  } else if (length === quarter && ((this._limit / 2) >= 8)) {
+    this._limit /= 2;
+    // this._storage = LimitedArray(this._limit);
+    console.log('Halved', this._limit);
   }
 };
 
