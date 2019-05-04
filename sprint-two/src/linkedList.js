@@ -51,8 +51,35 @@ var LinkedList = function() {
     return false;
   };
 
+  list.addToHead = function(val) {
+    var newHead = new Node(val);
+
+    if (list.head === null) {
+      list.head = newHead;
+      list.tail = newHead;
+      return;
+    } else {
+      newHead.next = list.head;
+      list.head = newHead;
+      return;
+    }
+  };
+
+  list.removeTail = function() {
+    var currentNode = list.head;
+    while (currentNode) {
+      if (currentNode.next === list.tail) {
+        list.tail = currentNode;
+        currentNode.next = null;
+      } else {
+        currentNode = currentNode.next;
+      }
+    }
+  };
+
   return list;
 };
+
 
 var Node = function(value) {
   var node = {};
