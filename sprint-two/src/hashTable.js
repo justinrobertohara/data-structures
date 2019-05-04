@@ -3,9 +3,14 @@
 var HashTable = function() {
   this._limit = 8;
   this._storage = LimitedArray(this._limit);
+  this._resizeOn = true;
 };
 
 HashTable.prototype.insert = function(k, v) {
+  if (this._resizeOn) {
+    this.resize();
+  }
+
   var index = getIndexBelowMaxForKey(k, this._limit);
 
   var bucket = [];
@@ -51,6 +56,47 @@ HashTable.prototype.remove = function(k) {
       bucket.splice(i, 1);
     }
   }
+  this.resize();
+};
+
+HashTable.prototype.resize = function() {
+  var arr = [];
+
+  this._storage.each(function(bucket) {
+    if (bucket !== undefined) {
+      for (var i = 0; i < bucket.length; ++i) {
+        arr.push(bucket[i]);
+      }
+    }
+  });
+
+  var length = arr.length;
+
+  if (length === (this._limit * .75)) {
+    this._limit *= 2;
+
+    this._storage = LimitedArray(this._limit);
+    this._resizeOn = false;
+
+    for (var i = 0; i < arr.length; ++i) {
+      this.insert(arr[i][0], arr[i][1]);
+    }
+
+    this._resizeOn = true;
+
+  } else if ((length === (this._limit * .25)) && ((this._limit / 2) >= 8)) {
+    this._limit /= 2;
+
+    this._storage = LimitedArray(this._limit);
+    this._resizeOn = false;
+
+    for (var i = 0; i < arr.length; ++i) {
+      this.insert(arr[i][0], arr[i][1]);
+    }
+
+    this._resizeOn = true;
+  }
+
 };
 
 

@@ -66,4 +66,37 @@ describe('linkedList', function() {
     expect(linkedList.head.next.next.value).to.equal(6);
   });
 
+  it('should assign a head if list.head is null', function() {
+    expect(linkedList.head).to.equal(null);
+    linkedList.addToHead(1);
+    expect(linkedList.head.value).to.equal(1);
+  });
+
+  it('should reassign previous head to the new heads next value', function() {
+    linkedList.addToTail(4);
+    linkedList.addToTail(5);
+    linkedList.addToTail(6);
+    expect(linkedList.head.value).to.equal(4);
+    linkedList.addToHead(1);
+    expect(linkedList.head.next.value).to.equal(4);
+  });
+
+  it('should add a new head', function () {
+    linkedList.addToTail(4);
+    linkedList.addToTail(5);
+    linkedList.addToTail(6);
+    expect(linkedList.head.value).to.equal(4);
+    linkedList.addToHead(1);
+    expect(linkedList.head.value).to.equal(1);
+  });
+
+  it('should remove the tail', function() {
+    linkedList.addToTail(4);
+    linkedList.addToTail(5);
+    linkedList.addToTail(6);
+    expect(linkedList.tail.value).to.equal(6);
+    linkedList.removeTail();
+    expect(linkedList.tail.value).to.equal(5);
+  });
+
 });
