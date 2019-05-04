@@ -3,10 +3,14 @@
 var HashTable = function() {
   this._limit = 8;
   this._storage = LimitedArray(this._limit);
+  this._resizeOn = true;
 };
 
 HashTable.prototype.insert = function(k, v) {
-  this.resize();
+  if (this._resizeOn) {
+    this.resize();
+  }
+
   var index = getIndexBelowMaxForKey(k, this._limit);
 
   var bucket = [];
@@ -56,47 +60,43 @@ HashTable.prototype.remove = function(k) {
 };
 
 HashTable.prototype.resize = function() {
-  var quarter = this._limit * .25;
   var arr = [];
 
-  this._storage.each(function(index) {
-    if (index !== undefined) {
-      for (var i = 0; i < index.length; ++i) {
-        arr.push(index[i]);
+  this._storage.each(function(bucket) {
+    if (bucket !== undefined) {
+      for (var i = 0; i < bucket.length; ++i) {
+        arr.push(bucket[i]);
       }
     }
   });
 
-  console.log('Arr', arr);
   var length = arr.length;
 
   if (length === (this._limit * .75)) {
     this._limit *= 2;
-    console.log('Doubled', this._limit);
 
     this._storage = LimitedArray(this._limit);
+    this._resizeOn = false;
 
     for (var i = 0; i < arr.length; ++i) {
       this.insert(arr[i][0], arr[i][1]);
     }
 
-    var arr2 = [];
-    this._storage.each(function(index) {
-      if (index !== undefined) {
-        for (var i = 0; i < index.length; ++i) {
-          arr2.push(index[i]);
-        }
-      }
-    });
+    this._resizeOn = true;
 
-    console.log('new limited array', arr2);
-    this._limit *= 2; //kind of cheating
-
-  } else if (length === quarter && ((this._limit / 2) >= 8)) {
+  } else if ((length === (this._limit * .25)) && ((this._limit / 2) >= 8)) {
     this._limit /= 2;
-    // this._storage = LimitedArray(this._limit);
-    console.log('Halved', this._limit);
+
+    this._storage = LimitedArray(this._limit);
+    this._resizeOn = false;
+
+    for (var i = 0; i < arr.length; ++i) {
+      this.insert(arr[i][0], arr[i][1]);
+    }
+
+    this._resizeOn = true;
   }
+
 };
 
 
