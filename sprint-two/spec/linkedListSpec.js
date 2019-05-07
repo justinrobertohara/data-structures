@@ -58,7 +58,7 @@ describe('linkedList', function() {
     expect(linkedList.tail.value).to.equal(4);
   });
 
-  it('should link the old tail\'s next value to the new tail', function() {
+  it("should link the old tail's next value to the new tail", function() {
     linkedList.addToTail(4);
     linkedList.addToTail(5);
     linkedList.addToTail(6);
@@ -81,7 +81,7 @@ describe('linkedList', function() {
     expect(linkedList.head.next.value).to.equal(4);
   });
 
-  it('should add a new head', function () {
+  it('should add a new head', function() {
     linkedList.addToTail(4);
     linkedList.addToTail(5);
     linkedList.addToTail(6);
@@ -99,4 +99,21 @@ describe('linkedList', function() {
     expect(linkedList.tail.value).to.equal(5);
   });
 
+  it('should add a previous property to our list initially', function() {
+    linkedList.addToTail(4);
+    expect(linkedList.tail.previous).to.equal(null);
+  });
+
+  it('should add a previous property to our list with multiple properties', function() {
+    linkedList.addToTail(4);
+    linkedList.addToTail(5);
+    expect(linkedList.tail.previous.value).to.equal(4);
+  });
+
+  it('should contain a previous property to our list initally in our a Add To head method', function() {
+    linkedList.addToHead(5);
+    linkedList.addToHead(6);
+    linkedList.addToHead(10);
+    expect(linkedList.head.previous).to.equal(null);
+  });
 });

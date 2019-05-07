@@ -1,10 +1,10 @@
-var Set = function() {
-  var set = Object.create(setPrototype);
+const Set = function() {
+  let set = Object.create(setPrototype);
   set._storage = [];
   return set;
 };
 
-var setPrototype = {};
+const setPrototype = {};
 
 setPrototype.add = function(item) {
   if (this._storage.indexOf(item) === -1) {

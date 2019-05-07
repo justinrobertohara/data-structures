@@ -1,11 +1,11 @@
-var BinarySearchTree = function(value) {
+const BinarySearchTree = function(value) {
   this.value = value;
   this.right = null;
   this.left = null;
 };
 
 BinarySearchTree.prototype.insert = function(value) {
-  var newBranch = new BinarySearchTree(value);
+  let newBranch = new BinarySearchTree(value);
 
   if (this.value === value) {
     return;
@@ -25,9 +25,9 @@ BinarySearchTree.prototype.insert = function(value) {
 BinarySearchTree.prototype.contains = function(value) {
   if (this.value === value) {
     return true;
-  } else if (this.right && (value > this.value)) {
+  } else if (this.right && value > this.value) {
     return this.right.contains(value);
-  } else if (this.left && (value < this.value)) {
+  } else if (this.left && value < this.value) {
     return this.left.contains(value);
   }
   return false;
@@ -42,7 +42,6 @@ BinarySearchTree.prototype.depthFirstLog = function(cb) {
     this.right.depthFirstLog(cb);
   }
 };
-
 
 /*
  * Complexity: What is the time complexity of the above functions?

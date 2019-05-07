@@ -1,6 +1,4 @@
-
-
-var HashTable = function() {
+const HashTable = function() {
   this._limit = 8;
   this._storage = LimitedArray(this._limit);
   this._resizeOn = true;
@@ -11,14 +9,14 @@ HashTable.prototype.insert = function(k, v) {
     this.resize();
   }
 
-  var index = getIndexBelowMaxForKey(k, this._limit);
+  let index = getIndexBelowMaxForKey(k, this._limit);
 
-  var bucket = [];
-  var tuple = [k, v];
+  let bucket = [];
+  let tuple = [k, v];
   if (!this._storage.get(index)) {
     this._storage.set(index, bucket);
   } else {
-    var bucket = this._storage.get(index);
+    let bucket = this._storage.get(index);
     for (let i = 0; i < bucket.length; i++) {
       if (bucket[i][0] === k) {
         bucket[i][1] = v;
@@ -29,8 +27,8 @@ HashTable.prototype.insert = function(k, v) {
 };
 
 HashTable.prototype.retrieve = function(k) {
-  var index = getIndexBelowMaxForKey(k, this._limit);
-  var bucket = this._storage.get(index);
+  let index = getIndexBelowMaxForKey(k, this._limit);
+  let bucket = this._storage.get(index);
 
   if (!bucket) {
     return;
@@ -44,14 +42,14 @@ HashTable.prototype.retrieve = function(k) {
 };
 
 HashTable.prototype.remove = function(k) {
-  var index = getIndexBelowMaxForKey(k, this._limit);
-  var bucket = this._storage.get(index);
+  let index = getIndexBelowMaxForKey(k, this._limit);
+  let bucket = this._storage.get(index);
 
   if (!bucket) {
     return;
   }
 
-  for (var i = 0; i < bucket.length; ++i) {
+  for (let i = 0; i < bucket.length; i++) {
     if (bucket[i][0] === k) {
       bucket.splice(i, 1);
     }
@@ -60,46 +58,42 @@ HashTable.prototype.remove = function(k) {
 };
 
 HashTable.prototype.resize = function() {
-  var arr = [];
+  let arr = [];
 
   this._storage.each(function(bucket) {
     if (bucket !== undefined) {
-      for (var i = 0; i < bucket.length; ++i) {
+      for (let i = 0; i < bucket.length; i++) {
         arr.push(bucket[i]);
       }
     }
   });
 
-  var length = arr.length;
+  let length = arr.length;
 
-  if (length === (this._limit * .75)) {
+  if (length === this._limit * 0.75) {
     this._limit *= 2;
 
     this._storage = LimitedArray(this._limit);
     this._resizeOn = false;
 
-    for (var i = 0; i < arr.length; ++i) {
+    for (var i = 0; i < arr.length; i++) {
       this.insert(arr[i][0], arr[i][1]);
     }
 
     this._resizeOn = true;
-
-  } else if ((length === (this._limit * .25)) && ((this._limit / 2) >= 8)) {
+  } else if (length === this._limit * 0.25 && this._limit / 2 >= 8) {
     this._limit /= 2;
 
     this._storage = LimitedArray(this._limit);
     this._resizeOn = false;
 
-    for (var i = 0; i < arr.length; ++i) {
+    for (let i = 0; i < arr.length; i++) {
       this.insert(arr[i][0], arr[i][1]);
     }
 
     this._resizeOn = true;
   }
-
 };
-
-
 
 /*
  * Complexity: What is the time complexity of the above functions?
@@ -107,4 +101,3 @@ HashTable.prototype.resize = function() {
   retrieve: constant, O(1)
   remove: constant, O(1)
  */
-

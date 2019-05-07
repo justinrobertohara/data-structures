@@ -1,5 +1,5 @@
-var LinkedList = function() {
-  var list = {};
+const LinkedList = function() {
+  let list = {};
   list.head = null;
   list.tail = null;
 
@@ -9,14 +9,17 @@ var LinkedList = function() {
     //assign the new node as list.tail.next's value
     //new node is now the new tail
 
-    var newNode = new Node(value);
-    if (list.head === null) {
+    let newNode = new Node(value);
+    if (!list.head) {
       list.head = newNode; //4
       list.tail = newNode;
       return;
     }
+    let previousVal = list.tail;
+
     list.tail.next = newNode; //4.next -> 5
     list.tail = newNode; //5
+    list.tail.previous = previousVal;
 
     /*{head = null, tail = null}
     1st Node = value: 4, next = Node 5
@@ -29,7 +32,7 @@ var LinkedList = function() {
     // re-assign the value of list.head
     // return the temp variable
 
-    var temp = list.head.value;
+    let temp = list.head.value;
     list.head = list.head.next;
     return temp;
   };
@@ -40,7 +43,7 @@ var LinkedList = function() {
     //conditional if .next === null, return false;
     //return a boolean value
 
-    var currentNode = list.head;
+    let currentNode = list.head;
     while (currentNode) {
       if (currentNode.value === target) {
         return true;
@@ -52,9 +55,9 @@ var LinkedList = function() {
   };
 
   list.addToHead = function(val) {
-    var newHead = new Node(val);
+    let newHead = new Node(val);
 
-    if (list.head === null) {
+    if (!list.head) {
       list.head = newHead;
       list.tail = newHead;
       return;
@@ -66,7 +69,7 @@ var LinkedList = function() {
   };
 
   list.removeTail = function() {
-    var currentNode = list.head;
+    let currentNode = list.head;
     while (currentNode) {
       if (currentNode.next === list.tail) {
         list.tail = currentNode;
@@ -80,12 +83,12 @@ var LinkedList = function() {
   return list;
 };
 
-
 var Node = function(value) {
-  var node = {};
+  let node = {};
 
   node.value = value;
   node.next = null;
+  node.previous = null;
 
   return node;
 };
