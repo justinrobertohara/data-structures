@@ -20,14 +20,7 @@ let treeMethods = {};
 
 treeMethods.addChild = function(value) {
   let newTree = new Tree(value);
-
-  // if (!this.children) {
-  //   this.parent = null;
-  // } else {
-  //   newTree.parent = [];
-  //   // console.log(this.value)
-  //   newTree.parent.push(this.value);
-  // }
+  newTree.parent = this;
 
   this.children.push(newTree);
 };
@@ -45,6 +38,27 @@ treeMethods.contains = function(target) {
   }
 };
 
+treeMethods.removeFromParent = function() {
+  var index = this.parent.findChild(this.value);
+  this.parent.children.splice(index, temp);
+  this.parent = null;
+};
+
+treeMethods.findChild = function(target) {
+  for (let i = 0; i < this.children.length; i++) {
+    if (this.children[i].value === target) {
+      return i;
+    }
+  }
+};
+
+treeMethods.traverse = function(cb) {
+  callback(this.value);
+
+  this.children.forEach(child => {
+    child.traverse(cb);
+  });
+};
 /*
  * Complexity: What is the time complexity of the above functions?
   addChild = constant, O(1)
